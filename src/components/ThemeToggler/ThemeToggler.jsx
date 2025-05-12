@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react'
+import React, { useLayoutEffect, useState} from 'react'
 
 const ThemeToggler = () => {
     const [isDark, setIsDark] = useState(false)
