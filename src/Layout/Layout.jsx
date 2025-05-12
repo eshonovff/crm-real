@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Home, BookOpen, Users, Calendar, Settings, Bell, ChevronDown, ChevronLeft, Menu, X, Search, LogOut, Star, Palette } from 'lucide-react';
+import ThemeToggler from "../components/ThemeToggler/ThemeToggler.jsx";
 
 const Layout = () => {
   // Состояния для управления интерфейсом
@@ -120,9 +121,9 @@ const Layout = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm text-gray-800 z-30 sticky top-0">
+      <header className="bg-white dark:bg-gray-800 dark:text-white border-b border-gray-200 shadow-sm text-gray-800 z-30 sticky top-0">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo and menu toggle */}
           <div className="flex items-center">
@@ -137,7 +138,7 @@ const Layout = () => {
               <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-2 rounded-lg mr-2">
                 <BookOpen className="w-5 h-5 text-white" />
               </div>
-              <h1 className="text-lg font-bold hidden sm:block text-gray-800">
+              <h1 className="text-lg font-bold hidden sm:block dark:text-white text-gray-800">
                 Учебный Центр
               </h1>
             </div>
@@ -153,7 +154,7 @@ const Layout = () => {
             >
               <Search className="w-5 h-5" />
             </button>
-
+            <ThemeToggler/>
             {/* Search Input (Desktop) */}
             <div className="relative hidden md:block">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

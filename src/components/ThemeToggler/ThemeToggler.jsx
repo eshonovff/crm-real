@@ -1,67 +1,43 @@
-// components/ThemeToggler/ThemeToggler.jsx
-import React, { useState, useEffect } from 'react'
-import './ThemeToggler.css'
+import React, {useEffect, useLayoutEffect, useState} from 'react'
 
 const ThemeToggler = () => {
-  const [isDark, setIsDark] = useState(false)
-  
-  // Добавляем дополнительные стили программно
-  const injectStyles = (isDark) => {
-    const styleId = 'dark-mode-extra-styles'
-    let styleElement = document.getElementById(styleId)
-    
-    if (isDark) {
-      if (!styleElement) {
-        styleElement = document.createElement('style')
-        styleElement.id = styleId
-        styleElement.innerHTML = `
-          body.dark-mode header { background-color: #111827 !important; color: #f9fafb !important; }
-          body.dark-mode footer { background-color: #111827 !important; color: #d1d5db !important; }
-          body.dark-mode .bg-gray-100 { background-color: #111827 !important; }
-          body.dark-mode .text-gray-600 { color: #d1d5db !important; }
-          body.dark-mode main { background-color: #1f2937 !important; }
-        `
-        document.head.appendChild(styleElement)
-      }
-    } else {
-      if (styleElement) {
-        styleElement.remove()
-      }
+    const [isDark, setIsDark] = useState(false)
+
+    useLayoutEffect(() => {
+        const savedTheme = localStorage.getItem('theme')
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark')
+            setIsDark(true)
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    }, [])
+
+    const toggleTheme = () => {
+        const newMode = !isDark
+        setIsDark(newMode)
+
+        if (newMode) {
+            document.documentElement.classList.add('dark')
+            localStorage.setItem('theme', 'dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+            localStorage.setItem('theme', 'light')
+        }
     }
-  }
-  
-  useEffect(() => {
-    // Проверяем localStorage при загрузке
-    const savedMode = localStorage.getItem('darkMode') === 'true'
-    if (savedMode) {
-      setIsDark(true)
-      document.body.classList.add('dark-mode')
-      injectStyles(true)
-    }
-  }, [])
-  
-  const toggleDarkMode = () => {
-    const newMode = !isDark
-    setIsDark(newMode)
-    
-    // Переключаем класс на body
-    document.body.classList.toggle('dark-mode', newMode)
-    
-    // Инъекция стилей
-    injectStyles(newMode)
-    
-    // Сохраняем выбор
-    localStorage.setItem('darkMode', newMode.toString())
-  }
-  
-  return (
-    <button 
-      onClick={toggleDarkMode}
-      className="theme-toggle-btn"
-    >
-      {isDark ? '☀️' : '🌙'}
-    </button>
-  )
+
+    return (
+        <button
+            onClick={toggleTheme}
+            className="relative w-16 h-8 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors duration-300 flex items-center p-1"
+        >
+        <span
+            className={`absolute w-6 h-6 rounded-full bg-white  shadow-md transform transition-transform duration-300 ease-in-out ${
+                isDark ? 'translate-x-8' : 'translate-x-0'
+            }`}
+        />
+        </button>
+    )
 }
 
 export default ThemeToggler
